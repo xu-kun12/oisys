@@ -12,6 +12,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 import eu.bitwalker.useragentutils.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,5 +67,9 @@ public class LoginController {
                 .put("className",classService.getById(user.getClassId()).getClassName())
                 .put("roleId",user.getRoleId()).put("imgpath",user.getImgPath());
     }
-
+  @GetMapping("/logout")
+    public ResponseResult logout(HttpSession session){
+        session.removeAttribute("userId");
+        return ResponseResult.ok("成功退出登录！");
+  }
 }
