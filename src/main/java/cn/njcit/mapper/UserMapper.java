@@ -3,6 +3,8 @@ package cn.njcit.mapper;
 import cn.njcit.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -12,5 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2024-09-03
  */
 public interface UserMapper extends BaseMapper<User> {
+
+    public List<User> getAllStudents();
+        public List<User> searchStudent(String searchName);
 
 }
