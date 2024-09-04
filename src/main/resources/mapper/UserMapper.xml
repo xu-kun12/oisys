@@ -4,12 +4,12 @@
     <resultMap id="studentResult" type="User">
         <id property="classId" column="class_id"/>
         <association property="oiClass" javaType="OIClass"
-                     column="class_id" select="cn.njcit.mapper.ClassMapper.slectById"/>
+                     column="class_id" select="cn.njcit.mapper.ClassMapper.selectById"/>
     </resultMap>
 
     <select id="getAllStudents" resultMap="studentResult">
         select * from aoa_user
-        where role_id and is_lock=0
+        where role_id=4 and is_lock=0
     </select>
 
     <select id="searchStudents" parameterType="String" resultMap="studentResult">

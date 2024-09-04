@@ -1,6 +1,6 @@
 package cn.njcit.service.impl;
 
-import cn.njcit.entity.OlClass;
+import cn.njcit.entity.OIClass;
 import cn.njcit.mapper.ClassMapper;
 import cn.njcit.service.IClassService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2024-09-03
  */
 @Service
-public class ClassServiceImpl extends ServiceImpl<ClassMapper, OlClass> implements IClassService {
+public class ClassServiceImpl extends ServiceImpl<ClassMapper, OIClass> implements IClassService {
 
 }

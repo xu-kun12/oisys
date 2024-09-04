@@ -1,6 +1,6 @@
 package cn.njcit.service;
 
-import cn.njcit.entity.OlClass;
+import cn.njcit.entity.OIClass;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author njcit
  * @since 2024-09-03
  */
-public interface IClassService extends IService<OlClass> {
+public interface IClassService extends IService<OIClass> {
 
 }

@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @since 2024-09-03
  */
 @TableName("aoa_class")
-public class OlClass implements Serializable {
+public class OIClass implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -16,6 +16,6 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     public List<User> getAllStudents();
-        public List<User> searchStudent(String searchName);
+        public List<User> searchStudents(String searchName);
 
 }

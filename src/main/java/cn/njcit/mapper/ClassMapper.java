@@ -1,6 +1,6 @@
 package cn.njcit.mapper;
 
-import cn.njcit.entity.OlClass;
+import cn.njcit.entity.OIClass;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author njcit
  * @since 2024-09-03
  */
-public interface ClassMapper extends BaseMapper<OlClass> {
+public interface ClassMapper extends BaseMapper<OIClass> {
 
 }

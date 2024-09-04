@@ -28,7 +28,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if(searchName==null||searchName.trim().equals("")){
             studentList=baseMapper.getAllStudents();
         }else {
-            studentList=baseMapper.searchStudent(searchName);
+            studentList=baseMapper.searchStudents(searchName);
         }
         return new PageInfo<User>(studentList);
     }

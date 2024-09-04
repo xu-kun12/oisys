@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author njcit
  * @since 2024-09-03
  */
-@Controller
+@RestController
 @RequestMapping("/studentManage")
 public class UserController {
     @Autowired
@@ -29,7 +30,7 @@ public class UserController {
     @GetMapping("/list")
     public ResponseResult studentManage(@RequestParam(defaultValue = "1")Integer page,
                                         @RequestParam(required = false) String searchName){
-        PageInfo<User> stuentList=userService.getStudentList(page,searchName);
-        return ResponseResult.ok().put("studentList",stuentList);
+        PageInfo<User> studentList=userService.getStudentList(page,searchName);
+        return ResponseResult.ok().put("studentList",studentList);
     }
 }
