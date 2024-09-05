@@ -16,4 +16,8 @@
         select * from aoa_user where role_id=4 and is_lock=0 and
         real_name like "%"#{searchName}"%"
     </select>
+
+    <select id="getStudentById" parameterType="Long" resultMap="studentResult">
+        select * from aoa_user where role_id=4 and is_lock=0 and user_id=#{id}
+    </select>
 </mapper>

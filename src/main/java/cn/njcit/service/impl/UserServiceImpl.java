@@ -32,4 +32,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         return new PageInfo<User>(studentList);
     }
+    @Override
+    public User getStudentById(Long id){
+        User student = baseMapper.getStudentById(id);
+        return student;
+    }
 }

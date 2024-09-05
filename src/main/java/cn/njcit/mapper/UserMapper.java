@@ -17,5 +17,5 @@ public interface UserMapper extends BaseMapper<User> {
 
     public List<User> getAllStudents();
         public List<User> searchStudents(String searchName);
-
+        public User getStudentById(Long id);
 }

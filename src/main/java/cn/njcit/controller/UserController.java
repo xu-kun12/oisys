@@ -1,5 +1,6 @@
 package cn.njcit.controller;
 
+import cn.njcit.entity.OIClass;
 import cn.njcit.entity.User;
 import cn.njcit.service.IClassService;
 import cn.njcit.service.IUserService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -33,4 +36,16 @@ public class UserController {
         PageInfo<User> studentList=userService.getStudentList(page,searchName);
         return ResponseResult.ok().put("studentList",studentList);
     }
+    @GetMapping("/edit")
+    public ResponseResult studentEdit(@RequestParam(required = false) Long userId){
+        ResponseResult responseResult = ResponseResult.ok();
+        if(userId !=null){
+            User user =userService.getStudentById(userId);
+            responseResult.put("student",user);
+        }
+        List<OIClass> classes =classService.list();
+        responseResult.put("classes",classes);
+        return responseResult;
+    }
 }
+

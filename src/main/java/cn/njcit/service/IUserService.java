@@ -14,5 +14,5 @@ import com.github.pagehelper.PageInfo;
  */
 public interface IUserService extends IService<User> {
     public PageInfo<User> getStudentList(Integer page,String searchName);
-
+    public User getStudentById(Long id);
 }
