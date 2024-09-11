@@ -22,9 +22,10 @@ import java.util.List;
  *  前端控制器
  * </p>
  *
- * @author njcit
- * @since 2024-09-02
+ * @author mashiro
+ * @since 2024-09-03
  */
+
 @RestController
 @RequestMapping("/studentManage")
 public class UserController {
@@ -32,23 +33,18 @@ public class UserController {
     private IUserService userService;
     @Autowired
     private IClassService classService;
-    /**
-     *
-     *
-     */
-    @GetMapping("list")
+
+    @GetMapping("/list")
     public ResponseResult studentManage(@RequestParam(defaultValue = "1") Integer page,
                                         @RequestParam(required = false) String searchName){
-        PageInfo<User> studentList = userService.getStudentList(page,searchName);
+        PageInfo<User> studentList = userService.getStudentList(page, searchName);
         return ResponseResult.ok().put("studentList",studentList);
     }
-    /**
-     *
-     */
+
     @GetMapping("/edit")
-    private ResponseResult studentEdit(@RequestParam(required = false) Long userId){
+    public ResponseResult studentEdit (@RequestParam(required = false) Long userId){
         ResponseResult responseResult = ResponseResult.ok();
-        if (userId != null) {
+        if(userId != null){
             User user = userService.getStudentById(userId);
             responseResult.put("student",user);
         }
@@ -56,41 +52,40 @@ public class UserController {
         responseResult.put("classes",classes);
         return responseResult;
     }
-    /**
-     *
-     */
-    @PostMapping("/save")
+    @PostMapping("save")
     public ResponseResult saveStudent(User user, @RequestParam(required = false) MultipartFile filePath,
-                                      @RequestParam(required = false) boolean resetPassword) throws IOException, InterruptedException{
-        if (user.getUserId() == null){
-            QueryWrapper<User> wrapper = new QueryWrapper<User>();
-            wrapper.eq("is_lock",0).eq("role_id",4).eq("user_name",user.getUserName());
-            if (userService.count(wrapper) > 0 ) {
-                return ResponseResult.error("用户名被占用，请换一个！");
+                                      @RequestParam(required = false) boolean resetPassword) throws IOException, InterruptedException {
+        if (user.getUserId() == null) {  // 用户对象的用户id是null，表示新增
+            // 先判断用户名(学号)是否被占用, 合成条件: 未冻结, 且role_id是4(学生), 且用户名是新增用户名
+            QueryWrapper<User> wrapper = new QueryWrapper<>();
+            wrapper.eq("is_lock", 0).eq("role_id", 4).eq("user_name", user.getUserName());
+            if (userService.count(wrapper) > 0) {  // 统计符合条件的记录数, 如果大于0, 表示用户名被占用了
+                return ResponseResult.error("用户名被占用, 请换一个!");  // 用户名被占用, 返回错误信息
             }
-            user.setRoleId(4L);
-            user.setIsLock(0);
+            // 执行到此处表示用户名未被占用, 设置新学生的某些固定信息(不在新增学生的表单中)
+            user.setRoleId(4L);  // 设置role_id是4
+            user.setIsLock(0);   // 设置未冻结
         }
-        String imgpath = userService.upload(filePath);
-        if (!StringUtil.isEmpty(imgpath)) {
-            user.setImgPath(imgpath);
-        }else if (user.getUserId() == null) {
-            user.setImgPath("oasys.jpg");
+        String imgpath = userService.upload(filePath); // 上传头像(新增和修改均有可能)
+        if (!StringUtil.isEmpty(imgpath)) {  // 如果头像上传成功, 上传后的文件名不为空
+            user.setImgPath(imgpath);  // 将上传后的文件名设置到学生对象的img_path字段
+        } else if (user.getUserId() == null) {  // 如果上传后的文件名为null, 且是新增用户(没有选择头像)
+            user.setImgPath("oasys.jpg");  // 为学生设置一个固定的头像
         }
+        // 注意, 如果是修改信息, 且没有重新上传头像, 维持user对象里的imgPath不变, 即不更改本来的头像
         if (resetPassword) {
-            user.setPassword("123456");
+            user.setPassword("123456"); // 如果用户选择重置密码, 重置密码(新增学生时此句总是执行, 所有学生密码默认设置为123456)
         }
-        user.setModifyTime(LocalDateTime.now());
-        return userService.saveOrUpdate(user) ? ResponseResult.ok("保存成功！") : ResponseResult.error("保存失败");
+        user.setModifyTime(LocalDateTime.now()); // 设置修改时间
+        return userService.saveOrUpdate(user) ? ResponseResult.ok("保存成功!") : ResponseResult.error("保存失败!"); // 执行更新或插入
     }
-    /**
-     *
-     */
+
     @DeleteMapping("/delete")
-    public ResponseResult deleteStudent(Long userId){
+    public ResponseResult deleteStudent(Long userId) {
         User user = new User();
         user.setUserId(userId);
         user.setIsLock(1);
-        return userService.updateById(user)?ResponseResult.ok("成功删除！") : ResponseResult.error("删除失败！");
+        return userService.updateById(user)?ResponseResult.ok("成功删除!") : ResponseResult.error("删除失败!");
     }
+
 }

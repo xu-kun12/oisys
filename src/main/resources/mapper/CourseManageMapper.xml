@@ -2,4 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.njcit.mapper.CourseManageMapper">
 
+    <resultMap id="courseManageResult" type="cn.njcit.entity.CourseManage">
+        <id property="id" column="id" />
+        <collection property="attendClassSettings" ofType="cn.njcit.entity.AttendClassSetting"
+                    column="id" select="cn.njcit.mapper.AttendClassSettingMapper.selectByCourseId"/>
+    </resultMap>
+
+    <resultMap id="getCourseManage" type="cn.njcit.entity.CourseManage">
+        <id property="id" column="id" />
+    </resultMap>
+
+
+    <select id="getAllCourseManage" resultMap="courseManageResult">
+        select * from aoa_course_manage
+    </select>
+
+    <select id="searchCourseManageName" parameterType="string" resultMap="courseManageResult">
+        select *
+        from aoa_course_manage
+        where course_name like '%${courseManageName}%'
+    </select>
+
+    <select id="getCourseManageById" parameterType="long" resultMap="courseManageResult">
+        select *
+        from aoa_course_manage
+        where id = #{id}
+    </select>
+
+    <select id="getAttendanceRecordsByName" parameterType="map" resultMap="getCourseManage">
+        SELECT * FROM aoa_course_manage
+        WHERE teacher_name = #{teacherName}
+        AND update_time LIKE CONCAT(#{month}, '%')
+    </select>
+
 </mapper>

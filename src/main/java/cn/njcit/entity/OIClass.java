@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 班级信息
  * </p>
  *
- * @author njcit
+ * @author mashiro
  * @since 2024-09-03
  */
 @TableName("aoa_class")

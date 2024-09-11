@@ -1,17 +1,19 @@
 package cn.njcit.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
  * 课程管理表
  * </p>
  *
- * @author njcit
+ * @author mashiro
  * @since 2024-09-03
  */
 @TableName("aoa_course_manage")
@@ -76,6 +78,17 @@ public class CourseManage implements Serializable {
      * 删除标识,0未删除 1删除
      */
     private Integer delFlag;
+
+    @TableField(exist = false)
+    private List<AttendClassSetting> attendClassSettings;
+
+    public List<AttendClassSetting> getAttendClassSettings() {
+        return attendClassSettings;
+    }
+
+    public void setAttendClassSettings(List<AttendClassSetting> attendClassSettings) {
+        this.attendClassSettings = attendClassSettings;
+    }
 
     public Long getId() {
         return id;
@@ -176,18 +189,19 @@ public class CourseManage implements Serializable {
     @Override
     public String toString() {
         return "CourseManage{" +
-            "id = " + id +
-            ", courseNo = " + courseNo +
-            ", courseName = " + courseName +
-            ", teacherNo = " + teacherNo +
-            ", teacherName = " + teacherName +
-            ", classNo = " + classNo +
-            ", className = " + className +
-            ", createTime = " + createTime +
-            ", updateTime = " + updateTime +
-            ", createUser = " + createUser +
-            ", updateUser = " + updateUser +
-            ", delFlag = " + delFlag +
-        "}";
+                "id=" + id +
+                ", courseNo='" + courseNo + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", teacherNo='" + teacherNo + '\'' +
+                ", teacherName='" + teacherName + '\'' +
+                ", classNo='" + classNo + '\'' +
+                ", className='" + className + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
+                ", createUser='" + createUser + '\'' +
+                ", updateUser='" + updateUser + '\'' +
+                ", delFlag=" + delFlag +
+                ", attendClassSettings=" + attendClassSettings +
+                '}';
     }
 }

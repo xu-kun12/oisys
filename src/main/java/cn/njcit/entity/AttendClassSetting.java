@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 课程时间设置
  * </p>
  *
- * @author njcit
+ * @author mashiro
  * @since 2024-09-03
  */
 @TableName("aoa_attend_class_setting")

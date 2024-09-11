@@ -5,7 +5,7 @@ import cn.njcit.filter.CORSFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-/*spring*/
+
 @Configuration
 public class FilterConfig{
     @Bean
@@ -25,5 +25,4 @@ public class FilterConfig{
         filterRegistrationBean.setOrder(2);
         return filterRegistrationBean;
     }
-
 }

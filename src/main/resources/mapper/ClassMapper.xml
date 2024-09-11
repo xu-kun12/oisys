@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.njcit.mapper.ClassMapper">
 
+    <select id="getAllOIClass" resultType="cn.njcit.entity.OIClass">
+        SELECT * FROM aoa_class
+    </select>
+
+    <select id="searchOIClass" parameterType="string" resultType="cn.njcit.entity.OIClass">
+        SELECT *
+        FROM aoa_class
+        WHERE class_no LIKE CONCAT('%', #{className}, '%')
+           OR class_name LIKE CONCAT('%', #{className}, '%')
+    </select>
+
+    <select id="getClassById" parameterType="integer" resultType="cn.njcit.entity.OIClass">
+        select * from aoa_class where class_id = #{id}
+    </select>
+
+    <select id="getClassDouble" resultType="cn.njcit.entity.OIClass">
+        select class_no,class_name
+        from aoa_class
+    </select>
+
 </mapper>

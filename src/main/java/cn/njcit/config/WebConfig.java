@@ -13,4 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/face/**").addResourceLocations("file:/" + userImageRoot);//头像图片映射
     }
+
+
+
 }

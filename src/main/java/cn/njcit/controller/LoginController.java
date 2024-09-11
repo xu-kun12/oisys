@@ -1,5 +1,6 @@
 package cn.njcit.controller;
 
+
 import cn.njcit.entity.User;
 import cn.njcit.entity.UserLoginRecord;
 import cn.njcit.service.IClassService;
@@ -12,10 +13,8 @@ import eu.bitwalker.useragentutils.UserAgent;
 import eu.bitwalker.useragentutils.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.net.InetAddress;
@@ -26,50 +25,70 @@ import java.time.LocalDateTime;
 @RequestMapping("/")
 public class LoginController {
     @Autowired
-    private IUserService userService;//注入IUserService
+    private IUserService userService;
+
     @Autowired
     private IUserLoginRecordService userLoginRecordService;
+
     @Autowired
     private IClassService classService;
 
-    //登录，根据用户名和密码查找
     @PostMapping(value = "login")
-    public ResponseResult loginCheck(String userName, String password, HttpSession session, HttpServletRequest request)
-        throws UnknownHostException{
-        QueryWrapper<User> wrapper =new QueryWrapper<>();
+    public ResponseResult loginCheck(String userName, String password, HttpSession session, HttpServletRequest request) throws UnknownHostException{
+
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("user_name",userName).eq("password",password);
-        User user =userService.getOne(wrapper);//按照条件查询
-        if(user == null){//通过用户名和密码查不到用户
-            return ResponseResult.error("账号或密码错误！");
+        User user = userService.getOne(wrapper);
+        if(user == null){
+            return ResponseResult.error("账号密码错误！");
         }
-        if(user.getIsLock()==1){//查出的用户is_lock属性为1，表示冻结
+        if(user.getIsLock()==1){
             return ResponseResult.error("账号已被冻结！");
         }
-        if(user.getStudentStatus()==1){//student_status属性为1，表示不在籍
+        if(user.getStudentStatus()==1){
             return ResponseResult.error("账号不在籍！");
         }
-        session.setAttribute("userId",user.getUserId());//将用户id存储在session中
-        //获得用户的浏览器和ip地址信息
+        session.setAttribute("userId",user.getUserId());
+        session.setAttribute("userName",user.getRealName());
+
         Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
-        Version version =browser.getVersion(request.getHeader("User-Agent"));
-        String browserInfo =browser.getName()+"/"+version.getVersion();
-        String ip= InetAddress.getLocalHost().getHostAddress();
-        //新增登录记录
-        UserLoginRecord loginRecord=new UserLoginRecord();
+        Version version = browser.getVersion(request.getHeader("User-Agent"));
+
+        String browserInfo;
+        if (version != null) {
+            browserInfo = browser.getName() + "/" + version.getVersion();
+        } else {
+            browserInfo = browser.getName() + "/Unknown"; // 版本信息不知道
+        }
+
+        String ip = InetAddress.getLocalHost().getHostAddress();
+
+
+//        Browser browser = UserAgent.parseUserAgentString(request.getHeader("User-Agent")).getBrowser();
+//        Version version = browser.getVersion(request.getHeader("User-Agent"));
+//        String browserInfo = browser.getName() + "/" + version.getVersion();
+//        String ip = InetAddress.getLocalHost().getHostAddress();
+
+        UserLoginRecord loginRecord = new UserLoginRecord();
         loginRecord.setBrowser(browserInfo);
         loginRecord.setIpAddr(ip);
         loginRecord.setLoginTime(LocalDateTime.now());
         loginRecord.setUserId(user.getUserId());
-        userLoginRecordService.save(loginRecord);//向aoa_user_login_record插入登录日志
-        //将用户id、实名、role_id、头像传入前端
+        System.out.println(loginRecord);
+        userLoginRecordService.save(loginRecord);
+
         return ResponseResult.ok().put("userId",user.getUserId())
+                .put("userName",user.getUserName())
                 .put("realName",user.getRealName())
                 .put("className",classService.getById(user.getClassId()).getClassName())
-                .put("roleId",user.getRoleId()).put("imgpath",user.getImgPath());
+                .put("roleId",user.getRoleId()).put("imgPath",user.getImgPath());
     }
-  @GetMapping("/logout")
+
+    @GetMapping("logout")
     public ResponseResult logout(HttpSession session){
         session.removeAttribute("userId");
-        return ResponseResult.ok("成功退出登录！");
-  }
+        return ResponseResult.ok("成功退出登录");
+    }
+
+
 }

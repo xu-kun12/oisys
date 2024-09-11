@@ -12,11 +12,12 @@ import java.time.LocalDateTime;
  * 考勤打卡
  * </p>
  *
- * @author njcit
+ * @author mashiro
  * @since 2024-09-03
  */
 @TableName("aoa_attends_list")
 public class AttendsList implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "attends_id", type = IdType.AUTO)

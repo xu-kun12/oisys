@@ -2,4 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.njcit.mapper.CourseMapper">
 
+    <select id="getAllCourses" resultType="cn.njcit.entity.Course">
+        select * from aoa_course
+    </select>
+
+    <select id="searchCourseNoName" parameterType="string" resultType="cn.njcit.entity.Course">
+        select *
+        from  aoa_course
+        where course_no like CONCAT('%', #{courseName}, '%')
+           or course_name like CONCAT('%', #{courseName}, '%')
+    </select>
+
+    <select id="getCourseById" parameterType="long" resultType="cn.njcit.entity.Course">
+        select *
+        from aoa_course
+        where id = #{courseId};
+    </select>
+    <select id="getAllCoursesDouble" resultType="cn.njcit.entity.Course">
+        select course_no,course_name from aoa_course
+    </select>
 </mapper>

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
  * 课程信息
  * </p>
  *
- * @author njcit
+ * @author mashiro
  * @since 2024-09-03
  */
 @TableName("aoa_course")
